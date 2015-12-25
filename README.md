@@ -1,5 +1,8 @@
 # node-resolve-lua
 
+[![npm](https://img.shields.io/npm/v/node-resolve-lua.svg?style=flat-square)](https://www.npmjs.com/package/node-resolve-lua)
+[![npm](https://img.shields.io/npm/l/node-resolve-lua.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+
 Implements node's require.resolve module [resolution pattern](https://nodejs.org/api/modules.html#modules_all_together) for Lua.
 
 This allows you to install Lua packages from [npm](https://www.npmjs.com/) and require them like normal modules.
