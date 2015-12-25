@@ -1,24 +1,44 @@
 # node-resolve-lua
 
-implements node's require.resolve module [resolution pattern](https://nodejs.org/api/modules.html#modules_all_together) for Lua.
+Implements node's require.resolve module [resolution pattern](https://nodejs.org/api/modules.html#modules_all_together) for Lua.
 
 This allows you to install Lua packages from [npm](https://www.npmjs.com/) and require them like normal modules.
 
-## Example
+All of the features of npm will come with using this pattern.
+
+* Semantic Versioning of modules
+* Modules installed locally, not globally
+* Manage installed modules in a package.json file
+* npm scripts
+* [Tons more](https://docs.npmjs.com/)
+
+## Usage
 
 npm uses this pattern when it installs modules. So let's use npm! [installing npm](https://docs.npmjs.com/getting-started/installing-node)
 
-In your project directory:
+In your project directory, we need to install node-resolve-lua:
+
+```sh
+$ npm install node-resolve-lua
+```
+
+```lua
+--Only needs to be done once
+require("./node_modules/node-resolve-lua/node-resolve")
+```
+
+And that's it! You're ready to include modules from npm now.
+
+## Example Usage
+
+If we wanted to use a module from npm such as [luadash](https://github.com/dannyfritz/luadash), we would do this:
 
 ```sh
 $ npm install luadash
 ```
 
-Then to use the module in a Lua file do this:
-
 ```lua
-require('./commonjs') --Only needs to be done once.
-local __ = require('luadash')
+local __ = require("luadash")
 
 function double (value)
   return value * 2
