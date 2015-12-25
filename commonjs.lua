@@ -10,18 +10,15 @@ local function getMain (moduleDir)
 end
 
 local function commonjs (targetModule)
-  print("looking for commonjs module: "..targetModule)
   local path = lfs.currentdir()
+  --TODO Go up a folder each time it isn't found
   for filename in lfs.dir(path) do
     if filename == "node_modules" then
       local nodeModulesPath = path.."/"..filename
       for module in lfs.dir(nodeModulesPath) do
         if module == targetModule then
-          print("found "..targetModule.."!")
           local moduleDir = nodeModulesPath.."/"..module
-          print(moduleDir)
           local moduleMain = getMain(moduleDir)
-          print(moduleMain)
           local file = io.open(moduleMain, "rb")
           if file then
             return assert(loadstring(assert(file:read("*a")), filename))
