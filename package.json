@@ -1,8 +1,12 @@
 {
-  "name": "commonjs-lua",
+  "name": "node-resolve-lua",
   "version": "1.0.0",
-  "description": "",
-  "main": "common.lua",
+  "description": "Bring node's require.resolve pattern to Lua.",
+  "keywords": [
+    "Lua",
+    "npm"
+  ],
+  "main": "node-resolve.lua",
   "author": "Danny Fritz <dannyfritz@gmail.com>",
   "license": "MIT"
 }
