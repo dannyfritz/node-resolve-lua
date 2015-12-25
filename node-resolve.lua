@@ -1,28 +1,56 @@
-local lfs = require("lfs")
+local fs = require("fs")
+local separator = package.config:match("^([^\n]*)")
+local moduleDir = "node_modules"
+local packageFile = "package.json"
 
-local function getMain (moduleDir)
-  local package = io.open(moduleDir.."/package.json")
-  if package then
-    local content = package:read("*a")
+local function getMain (modulePath)
+  local packagePath = modulePath..separator..packageFile
+  local content = fs.read(packagePath)
+  if content then
     local main = content:match("\"main\": \"([^\"]+)\"")
-    return moduleDir.."/"..main
+    return modulePath..separator..main
   end
 end
 
-local function commonjs (targetModule)
-  local path = lfs.currentdir()
-  --TODO Go up a folder each time it isn't found
-  local nodeModulesPath = path.."/node_modules"
-  for module in lfs.dir(nodeModulesPath) do
-    if module == targetModule then
-      local moduleDir = nodeModulesPath.."/"..module
-      local moduleMain = getMain(moduleDir)
-      local file = io.open(moduleMain, "rb")
-      if file then
-        return assert(loadstring(assert(file:read("*a")), filename))
-      end
+local function splitPath (path)
+  return path:gmatch("[^"..separator.."]+")
+end
+
+local function joinPaths (dirs)
+  return table.concat(dirs, separator)
+end
+
+local function checkModule (path, request)
+  if fs.isDirectory(path..separator..moduleDir..separator..request) and
+    fs.isFile(path..separator..moduleDir..separator..request..separator..packageFile)
+  then
+    return true
+  else
+    return false
+  end
+end
+
+local function loadModule (path, request)
+  local main = getMain(path..separator..moduleDir..separator..request)
+  return fs.load(main)
+end
+
+local function nodeResolve (request)
+  local cwd = fs.currentDir()
+  local paths = {}
+  for path in splitPath(cwd) do
+    table.insert(paths, path)
+  end
+  while #paths > 0 do
+    local path = joinPaths(paths)
+    if checkModule(path, request) then
+      print(path..' is valid!')
+      return loadModule(path, request)
     end
+    print(path..' is invalid!')
+    table.remove(paths)
+    print(table.concat(paths, ", "))
   end
 end
 
-table.insert(package.loaders, 2, commonjs)
+table.insert(package.loaders, 2, nodeResolve)

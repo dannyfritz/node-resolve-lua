@@ -1,5 +1,5 @@
 --Make sure the commonjs loader pattern is in
-require './node-resolve'
+require '../node-resolve'
 --Make sure you `npm install luadash` first
 local __ = require 'luadash'
 

@@ -8,7 +8,7 @@
   ],
   "main": "node-resolve.lua",
   "scripts": {
-    "test": "lua test.lua"
+    "test": "lua test/test.lua"
   },
   "author": "Danny Fritz <dannyfritz@gmail.com>",
   "license": "MIT",
