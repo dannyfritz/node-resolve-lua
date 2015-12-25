@@ -12,18 +12,14 @@ end
 local function commonjs (targetModule)
   local path = lfs.currentdir()
   --TODO Go up a folder each time it isn't found
-  for filename in lfs.dir(path) do
-    if filename == "node_modules" then
-      local nodeModulesPath = path.."/"..filename
-      for module in lfs.dir(nodeModulesPath) do
-        if module == targetModule then
-          local moduleDir = nodeModulesPath.."/"..module
-          local moduleMain = getMain(moduleDir)
-          local file = io.open(moduleMain, "rb")
-          if file then
-            return assert(loadstring(assert(file:read("*a")), filename))
-          end
-        end
+  local nodeModulesPath = path.."/node_modules"
+  for module in lfs.dir(nodeModulesPath) do
+    if module == targetModule then
+      local moduleDir = nodeModulesPath.."/"..module
+      local moduleMain = getMain(moduleDir)
+      local file = io.open(moduleMain, "rb")
+      if file then
+        return assert(loadstring(assert(file:read("*a")), filename))
       end
     end
   end
