@@ -11,5 +11,8 @@
     "test": "lua test.lua"
   },
   "author": "Danny Fritz <dannyfritz@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "luadash": "^1.0.0"
+  }
 }
