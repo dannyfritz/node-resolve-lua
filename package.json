@@ -1,0 +1,8 @@
+{
+  "name": "commonjs-lua",
+  "version": "1.0.0",
+  "description": "",
+  "main": "common.lua",
+  "author": "Danny Fritz <dannyfritz@gmail.com>",
+  "license": "MIT"
+}
