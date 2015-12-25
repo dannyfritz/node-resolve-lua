@@ -1,8 +1,6 @@
-## **Deprecated: Use [lua-loader](https://www.npmjs.com/package/lua-loader) instead.**
+# node-resolve-lua
 
-# commonjs.lua
-
-implements the commonjs module [resolution pattern](https://nodejs.org/api/modules.html#modules_all_together) as defined by Node.
+implements node's require.resolve module [resolution pattern](https://nodejs.org/api/modules.html#modules_all_together) for Lua.
 
 This allows you to install Lua packages from [npm](https://www.npmjs.com/) and require them like normal modules.
 
@@ -16,8 +14,10 @@ In your project directory:
 $ npm install luadash
 ```
 
+Then to use the module in a Lua file do this:
+
 ```lua
-require('./commonjs')
+require('./commonjs') --Only needs to be done once.
 local __ = require('luadash')
 
 function double (value)
