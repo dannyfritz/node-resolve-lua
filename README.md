@@ -1,3 +1,5 @@
+## **Deprecated: Use [lua-loader](https://www.npmjs.com/package/lua-loader) instead.**
+
 # commonjs.lua
 
 implements the commonjs module [resolution pattern](https://nodejs.org/api/modules.html#modules_all_together) as defined by Node.
