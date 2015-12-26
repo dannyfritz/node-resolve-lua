@@ -1,23 +1,32 @@
 local fs = {}
 local lfs = nil
+local separator = package.config:match("^([^\n]*)")
 
 if love ~= nil then
 elseif pcall(function () lfs = require('lfs') end) then
 else
-  print("LFS or Love are required to access the filesystem.")
+  error("LFS or Love are required to access the filesystem.")
 end
 
 function fs.currentDir ()
   if love ~= nil then
-    return love.filesystem.getWorkingDirectory()
+    return "/"
   elseif lfs ~= nil then
     return lfs.currentdir()
   end
 end
 
+local function normalizePath (path)
+  if love ~= nil then
+    local normalizedPath = path:gsub("\\", "/")
+    return normalizedPath
+  end
+  return path
+end
+
 function fs.isDirectory (path)
   if love ~= nil then
-    return love.filesystem.isDirectory(path)
+    return love.filesystem.isDirectory(normalizePath(path))
   elseif lfs ~= nil then
     local stat = lfs.attributes(path)
     if stat ~= nil then
@@ -29,7 +38,7 @@ end
 
 function fs.isFile (path)
   if love ~= nil then
-    return love.filesystem.isFile(path)
+    return love.filesystem.isFile(normalizePath(path))
   elseif lfs ~= nil then
     local stat = lfs.attributes(path)
     if stat ~= nil then
@@ -41,7 +50,7 @@ end
 
 function fs.read (path)
   if love ~= nil then
-    return love.filesystem.read(path)
+    return love.filesystem.read(normalizePath(path))
   else
     local file = io.open(path, "rb")
     if file then
@@ -52,7 +61,7 @@ end
 
 function fs.load (path)
   if love ~= nil then
-    return love.filesystem.load(path)()
+    return love.filesystem.load(normalizePath(path))
   else
     return assert(loadstring(assert(fs.read(path)), path))
   end

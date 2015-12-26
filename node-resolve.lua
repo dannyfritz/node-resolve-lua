@@ -5,6 +5,9 @@ local packageFile = "package.json"
 
 local function getMain (modulePath)
   local packagePath = modulePath..separator..packageFile
+  if not fs.isFile(packagePath) then
+    return
+  end
   local content = fs.read(packagePath)
   if content then
     local main = content:match("\"main\": \"([^\"]+)\"")
@@ -13,7 +16,7 @@ local function getMain (modulePath)
 end
 
 local function splitPath (path)
-  return path:gmatch("[^"..separator.."]+")
+  return path:gmatch("[^/\\]+")
 end
 
 local function joinPaths (dirs)
@@ -32,6 +35,7 @@ end
 
 local function loadModule (path, request)
   local main = getMain(path..separator..moduleDir..separator..request)
+  print(main)
   return fs.load(main)
 end
 
@@ -41,15 +45,15 @@ local function nodeResolve (request)
   for path in splitPath(cwd) do
     table.insert(paths, path)
   end
+  if #paths == 0 then
+    table.insert(paths, "")
+  end
   while #paths > 0 do
     local path = joinPaths(paths)
     if checkModule(path, request) then
-      print(path..' is valid!')
       return loadModule(path, request)
     end
-    print(path..' is invalid!')
-    table.remove(paths)
-    print(table.concat(paths, ", "))
+    table.remove(paths, #paths)
   end
 end
 
