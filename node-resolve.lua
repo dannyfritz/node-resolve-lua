@@ -57,4 +57,8 @@ local function nodeResolve (request)
   end
 end
 
-table.insert(package.loaders, 2, nodeResolve)
+if package.loaders ~= nil then
+  table.insert(package.loaders, 2, nodeResolve)
+elseif package.searchers ~= nil then
+  table.insert(package.searchers, 2, nodeResolve)
+end
