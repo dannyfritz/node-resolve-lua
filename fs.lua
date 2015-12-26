@@ -63,7 +63,13 @@ function fs.load (path)
   if love ~= nil then
     return love.filesystem.load(normalizePath(path))
   else
-    return assert(loadstring(assert(fs.read(path)), path))
+    if loadstring ~= nil then
+      --Lua 5.1
+      return assert(loadstring(assert(fs.read(path)), path))
+    elseif load ~= nil then
+      --Lua 5.2+
+      return assert(load(assert(fs.read(path)), path))
+    end
   end
 end
 
